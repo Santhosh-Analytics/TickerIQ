@@ -1,0 +1,16 @@
+[project]
+name = "ticketiq"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "pydantic-settings[toml]>=2.14.1",
+    "rich>=15.0.0",
+]
+
+[dependency-groups]
+dev = [
+    "basedpyright>=1.39.3",
+    "ruff>=0.15.12",
+]

@@ -1,0 +1,6 @@
+app_name = "san"
+data_dir = "data"
+debug = false
+log_dir = "logs"
+llm_model = "sett"
+llm_base_url = "sett"
