@@ -4,3 +4,8 @@ debug = false
 log_dir = "logs"
 llm_model = "sett"
 llm_base_url = "sett"
+learning_rate = 1e-4
+num_train_epochs = 5
+
+selected_model = "roberta-base"
+use_lora = false
