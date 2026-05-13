@@ -20,6 +20,13 @@
 # ----------------(*)----------------(*)-----------------(*)-----------------#
 
 
+from TicketIQ.config.paths import PathsSettings
+from TicketIQ.config.model import HFTrainingSettings
+from TicketIQ.config.log_config import LogSettings
+from TicketIQ.config.exception import ExceptionSettings
+from TicketIQ.config.docker import DockerSettings
+from TicketIQ.config.secrets import SecretsSettings
+from functools import lru_cache
 from pathlib import Path
 
 from pydantic import Field
@@ -30,21 +37,22 @@ from pydantic_settings import (
     TomlConfigSettingsSource,
 )
 
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
+_base_dir = Path(__file__).resolve().parents[3]
 
 
 class Settings(BaseSettings):
     app_name: str = Field(default="TicketIQ")
-    debug: bool = Field(default=False)
-
-    data_dir: Path = Field(default=BASE_DIR / "data")
-    log_dir: Path = Field(default=BASE_DIR / "logs")
-
-    llm_model: str = Field(default="default")
-    llm_base_url: str = Field(default="default")
+    paths: PathsSettings = Field(default_factory=PathsSettings)
+    hf_training: HFTrainingSettings = Field(
+        default_factory=HFTrainingSettings
+    )  # renamed from 'model'
+    logs: LogSettings = Field(default_factory=LogSettings)
+    exception: ExceptionSettings = Field(default_factory=ExceptionSettings)
+    docker: DockerSettings = Field(default_factory=DockerSettings)
+    secrets: SecretsSettings = Field(default_factory=SecretsSettings)
 
     model_config = SettingsConfigDict(
-        toml_file=str(BASE_DIR / "settings.toml"),
+        toml_file=str(_base_dir / "settings.toml"),
         case_sensitive=False,
         extra="ignore",
     )
@@ -66,7 +74,10 @@ class Settings(BaseSettings):
         )
 
 
-settings = Settings()
+@lru_cache(maxsize=1)
+def get_settings() -> Settings:
+    return Settings()
+
 
 if __name__ == "__main__":
-    print(settings.model_dump())
+    print(get_settings().model_dump())

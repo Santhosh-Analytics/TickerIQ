@@ -1,5 +1,5 @@
 from enum import Enum
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -35,6 +35,12 @@ class TrainingParams(BaseModel):
     load_best_model_at_end: bool = True
     metric_for_best_model: str = "f1"
 
+    @model_validator(mode="after")
+    def check_precision_flags(self) -> "TrainingParams":
+        if self.fp16 and self.bf16:
+            raise ValueError("fp16 and bf16 cannot both be True")
+        return self
+
 
 class HFTrainingSettings(BaseSettings):
     """Main Hugging Face Training Configuration."""
@@ -52,9 +58,3 @@ class HFTrainingSettings(BaseSettings):
     lora_r: int = Field(default=16, gt=0)
     lora_alpha: int = Field(default=32, gt=0)
     lora_dropout: float = Field(default=0.1, ge=0, le=1)
-
-
-HF_settings = HFTrainingSettings()
-
-if __name__ == "__main__":
-    print(HF_settings.model_dump())

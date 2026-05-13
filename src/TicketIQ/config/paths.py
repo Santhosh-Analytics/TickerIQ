@@ -1,13 +1,10 @@
-from ast import main
 from pathlib import Path
-from pydoc import importfile
 from pydantic import Field, model_validator
-from pydantic_core.core_schema import AfterValidatorFunctionSchema
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class PathsSettings(BaseSettings):
-    """doc string"""
+    """Resolves and creates all project directory paths relative to the project root."""
 
     base_dir: Path = Field(default_factory=lambda: Path(__file__).resolve().parents[3])
 
@@ -50,10 +47,3 @@ class PathsSettings(BaseSettings):
                 setattr(self, attr, name)
             getattr(self, attr).mkdir(parents=True, exist_ok=True)
         return self
-
-
-paths = PathsSettings()
-
-
-if __name__ == "__main__":
-    print(paths.model_dump())

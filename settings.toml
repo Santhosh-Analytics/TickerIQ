@@ -1,8 +1,8 @@
 app_name = "san"
-data_dir = "data"
-debug = false
-log_dir = "logs"
-llm_model = "sett"
+data_dir = "sedata"
+debug = true
+log_dir = "selogs"
+llm_model = "sesett"
 llm_base_url = "sett"
 learning_rate = 1e-4
 num_train_epochs = 5
