@@ -9,3 +9,7 @@ num_train_epochs = 5
 
 selected_model = "roberta-base"
 use_lora = false
+[data]
+min_word_count = 9
+dataset_sample_size = 200000
+random_seed = 42

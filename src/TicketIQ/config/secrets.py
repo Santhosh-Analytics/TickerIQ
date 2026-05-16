@@ -1,3 +1,4 @@
+from pathlib import Path
 from pydantic import SecretStr, Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -6,7 +7,7 @@ class SecretsSettings(BaseSettings):
     """Sensitive credentials and secrets."""
 
     model_config = SettingsConfigDict(
-        secrets_dir="/run/secrets",  # Docker/Kubernetes secrets support
+        secrets_dir="/run/secrets" if Path("/run/secrets").exists() else None,
         extra="ignore",
     )
 

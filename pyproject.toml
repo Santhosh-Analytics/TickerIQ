@@ -4,10 +4,20 @@ version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.14"
-dependencies = ["pydantic-settings[toml]>=2.14.1", "rich>=15.0.0"]
+dependencies = [
+    "kagglehub[pandas-datasets]>=1.0.1",
+    "pandas>=3.0.3",
+    "pandas-stubs>=3.0.0.260204",
+    "pydantic-settings[toml]>=2.14.1",
+    "rich>=15.0.0",
+]
 
 [dependency-groups]
-dev = ["basedpyright>=1.39.3", "ruff>=0.15.12"]
+dev = [
+    "basedpyright>=1.39.3",
+    "ipykernel>=7.2.0",
+    "ruff>=0.15.12",
+]
 
 
 [build-system] #How your project is built

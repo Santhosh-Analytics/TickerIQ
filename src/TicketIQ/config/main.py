@@ -26,6 +26,7 @@ from TicketIQ.config.log_config import LogSettings
 from TicketIQ.config.exception import ExceptionSettings
 from TicketIQ.config.docker import DockerSettings
 from TicketIQ.config.secrets import SecretsSettings
+from TicketIQ.config.data import DataSettings
 from functools import lru_cache
 from pathlib import Path
 
@@ -47,6 +48,7 @@ class Settings(BaseSettings):
         default_factory=HFTrainingSettings
     )  # renamed from 'model'
     logs: LogSettings = Field(default_factory=LogSettings)
+    data: DataSettings = Field(default_factory=DataSettings)
     exception: ExceptionSettings = Field(default_factory=ExceptionSettings)
     docker: DockerSettings = Field(default_factory=DockerSettings)
     secrets: SecretsSettings = Field(default_factory=SecretsSettings)

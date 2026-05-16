@@ -71,8 +71,8 @@ category_keywords: dict[CategoryLabel, list[str]] = {
 
 
 def assign_category(text: str) -> CategoryLabel:
-    counter = {category: 0 for category in CATEGORY_KEYWORDS}
-    for category, keywords in CATEGORY_KEYWORDS.items():
+    counter = {category: 0 for category in category_keywords}
+    for category, keywords in category_keywords.items():
         for keyword in keywords:
             if keyword in text:
                 counter[category] += 1
