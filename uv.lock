@@ -286,6 +286,15 @@ wheels = [
 ]
 
 [[package]]
+name = "justfile"
+version = "0.0.1a0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/9f/22/db3cd9161dd2a773f8fc5c975410c7dd5531e68788574a056d852de28104/justfile-0.0.1a0.tar.gz", hash = "sha256:0f12000a1da84585402daff428fb842854d81574b923cb130af875f46ce43b4a", size = 3330 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/fe/2c/2b851b151f210b894c9a32f237e8badb58d70ac895294b4a1ddc78c517db/justfile-0.0.1a0-py2.py3-none-any.whl", hash = "sha256:75ba63146bf24029696e31ee04d58dbbacf5443b27e895c69973e9bfd1f17a92", size = 3712 },
+]
+
+[[package]]
 name = "kagglehub"
 version = "1.0.1"
 source = { registry = "https://pypi.org/simple" }
@@ -318,6 +327,15 @@ sdist = { url = "https://files.pythonhosted.org/packages/89/7f/80d1910fbb42d59e5
 wheels = [
     { url = "https://files.pythonhosted.org/packages/8f/4e/fead499e4e76f66203611ecee1032fc8da87f2ab59c3921c76b06334cbbf/kagglesdk-0.1.23-py3-none-any.whl", hash = "sha256:8966f7d99f59f2b769681e19a2cf52192b23be053de6875c06e66cd85c4f1dd1", size = 217784 },
 ]
+
+[[package]]
+name = "langdetect"
+version = "1.0.9"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "six" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/0e/72/a3add0e4eec4eb9e2569554f7c70f4a3c27712f40e3284d483e88094cc0e/langdetect-1.0.9.tar.gz", hash = "sha256:cbc1fef89f8d062739774bd51eda3da3274006b3661d199c2655f6b3f6d605a0", size = 981474 }
 
 [[package]]
 name = "markdown-it-py"
@@ -814,6 +832,7 @@ version = "0.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "kagglehub", extra = ["pandas-datasets"] },
+    { name = "langdetect" },
     { name = "pandas" },
     { name = "pandas-stubs" },
     { name = "pydantic-settings", extra = ["toml"] },
@@ -824,12 +843,14 @@ dependencies = [
 dev = [
     { name = "basedpyright" },
     { name = "ipykernel" },
+    { name = "justfile" },
     { name = "ruff" },
 ]
 
 [package.metadata]
 requires-dist = [
     { name = "kagglehub", extras = ["pandas-datasets"], specifier = ">=1.0.1" },
+    { name = "langdetect", specifier = ">=1.0.9" },
     { name = "pandas", specifier = ">=3.0.3" },
     { name = "pandas-stubs", specifier = ">=3.0.0.260204" },
     { name = "pydantic-settings", extras = ["toml"], specifier = ">=2.14.1" },
@@ -840,6 +861,7 @@ requires-dist = [
 dev = [
     { name = "basedpyright", specifier = ">=1.39.3" },
     { name = "ipykernel", specifier = ">=7.2.0" },
+    { name = "justfile", specifier = ">=0.0.1a0" },
     { name = "ruff", specifier = ">=0.15.12" },
 ]
 

@@ -1,15 +1,22 @@
-import random
-from numpy import minimum
+from pathlib import Path
 import pandas as pd
 import re
 import html
 from TicketIQ.config import get_settings
 from TicketIQ.logger import get_logger
 
+cleaned_csv = Path(get_settings().paths.processed_data_dir / "cleaned_data.csv")
 MIN_WORD_COUNT = get_settings().data.min_word_count
 
 dataset_sample_size = get_settings().data.dataset_sample_size
 random_seed = get_settings().data.random_seed
+
+
+def is_english(text: str) -> bool:
+    try:
+        return detect(text) == "en"
+    except LangDetectException:
+        return False
 
 
 def filter_data(df: pd.DataFrame) -> pd.DataFrame:
@@ -53,5 +60,5 @@ def clean_data(df: pd.DataFrame) -> pd.DataFrame:
     get_logger(__name__).info(
         f"Length filter removed {before - after} rows, {after} remaining"
     )
-    print(df["text"].str.split().str.len().describe())
+    df.to_csv(str(cleaned_csv), index=False)
     return df

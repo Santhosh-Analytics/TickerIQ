@@ -1,5 +1,3 @@
-from pathlib import Path
-from TicketIQ import exception
 from TicketIQ.logger import get_logger
 from TicketIQ.exception import DataLoadError
 from TicketIQ.config.main import get_settings
@@ -10,6 +8,7 @@ import pandas as pd
 def load_data() -> pd.DataFrame:
     data_dir = get_settings().paths.raw_data_dir
     csv_path = data_dir / "twcs/twcs.csv"
+    KAGGLE_HANDLE = "thoughtvector/customer-support-on-twitter"
 
     try:
         if not csv_path.exists():
@@ -19,7 +18,7 @@ def load_data() -> pd.DataFrame:
                 output_dir=str(data_dir),
             )
         else:
-            get_logger(__name__).info(f"Dataset already exists, skipping download")
+            get_logger(__name__).info("Dataset already exists, skipping download")
 
         if not csv_path.exists():
             raise DataLoadError(

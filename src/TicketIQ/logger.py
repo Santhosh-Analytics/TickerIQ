@@ -2,12 +2,12 @@ import logging
 from logging.handlers import RotatingFileHandler
 from rich.logging import RichHandler
 
-from TicketIQ.config import Settings
+# from TicketIQ.config import Settings
 from TicketIQ.config.main import get_settings
 
 
 class AppLogger:
-    def __init__(self, settings: Settings):
+    def __init__(self, settings: get_settings().Settings):
         self.settings = settings
 
     def _make_file_handler(self) -> RotatingFileHandler:

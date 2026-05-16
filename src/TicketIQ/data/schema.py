@@ -1,5 +1,4 @@
-from pydoc import text
-from pydantic import Field, BaseModel
+from pydantic import BaseModel
 from enum import Enum
 
 
@@ -9,11 +8,10 @@ class CategoryLabel(str, Enum):
     SHIPPING = "shipping"
     ACCOUNT = "account"
     SUBSCRIPTION = "subscription"
-    GENERAL = "General"
+    GENERAL = "general"
 
 
 class PriorityLabel(str, Enum):
-    LOW = "low"
     MEDIUM = "medium"
     HIGH = "high"
     CRITICAL = "critical"

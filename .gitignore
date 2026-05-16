@@ -13,3 +13,4 @@ model/
 data/
 logs/
 *.csv
+re.compile('@\\w+')

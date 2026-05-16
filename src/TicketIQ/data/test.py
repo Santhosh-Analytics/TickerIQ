@@ -1,5 +1,4 @@
 from pathlib import Path
-from TicketIQ.config import Settings
 from TicketIQ.config.main import get_settings
 
 s = get_settings()
