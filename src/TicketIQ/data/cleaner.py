@@ -12,13 +12,6 @@ dataset_sample_size = get_settings().data.dataset_sample_size
 random_seed = get_settings().data.random_seed
 
 
-def is_english(text: str) -> bool:
-    try:
-        return detect(text) == "en"
-    except LangDetectException:
-        return False
-
-
 def filter_data(df: pd.DataFrame) -> pd.DataFrame:
     filter_df = df[df["inbound"]].copy()
     filter_df = filter_df.drop(

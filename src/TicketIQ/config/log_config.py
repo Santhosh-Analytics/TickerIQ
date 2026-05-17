@@ -13,7 +13,7 @@ class LogSettings(BaseSettings):
     log_backup_count: int = 5
     log_to_console: bool = True
     log_to_file: bool = True
-    log_file_name: str = f"{datetime.now():%Y_%m_%d}.log"
+    log_file_name: str = Field(default_factory=lambda: f"{datetime.now():%Y_%m_%d}.log")
     log_fmt: str = "%(asctime)s || %(levelname)-8s || %(name)s || %(message)s"
     log_date: str = "%Y-%m-%d %H:%M:%S"
 

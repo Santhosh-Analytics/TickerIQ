@@ -1,5 +1,6 @@
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
+from typing import Literal
 
 
 class DockerSettings(BaseSettings):
@@ -13,7 +14,9 @@ class DockerSettings(BaseSettings):
 
     use_gpu: bool = True
     num_workers: int = Field(default=4, gt=0)
-    torch_dtype: str = Field(default="float16", pattern="^(float16|bfloat16|float32)$")
+    torch_dtype: Literal["float16", "bfloat16", "float32"] = Field(
+        default="float16", pattern="^(float16|bfloat16|float32)$"
+    )
 
     # Resource limits
     max_memory_gb: float | None = None

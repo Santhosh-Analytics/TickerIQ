@@ -20,29 +20,39 @@ pd.set_option("display.width", None)  # don’t wrap lines
 pd.set_option("display.max_colwidth", None)  # show full text in each cell
 
 # import kagglehub
+logger = get_logger(__name__)
 
 
 def get_cleaned_data():
-    cleaned_csv: Path = get_settings().paths.processed_data_dir / "cleaned_data.csv"
-    if cleaned_csv.exists():
-        get_logger(__name__).info(f"Cleaned data found at {cleaned_csv}, reading it.")
+    cleaned_csv = get_settings().paths.processed_data_dir / "cleaned_data.csv"
+    labeled_csv = get_settings().paths.processed_data_dir / "labeled_data.csv"
+
+    if labeled_csv.exists():
+        logger.info(f"Labeled data found at {labeled_csv}")
+        df = pd.read_csv(labeled_csv)
+        logger.info(f"Dataset rows: {len(df)}")
+        return df
+
+    elif cleaned_csv.exists() and not labeled_csv.exists():
+        logger.info(f"Cleaned data found at {cleaned_csv}")
         df = pd.read_csv(cleaned_csv)
-        get_logger(__name__).info(f"Data length: {df.count()}")
+        logger.info(f"Data length: {len(df)}")
         return applying_label(df)
+
     else:
-        get_logger(__name__).info("No cleaned data found, processing from raw...")
+        logger.info("No cleaned or processed data found. Running full pipeline.")
         df: pd.DataFrame = loader.load_data()
         df = cleaner.filter_data(df)
         df = cleaner.clean_data(df)
-        get_logger(__name__).info(f"Data length: {len(df)}")
+        logger.info(f"Final dataset rows: {len(df)}")
         return applying_label(df)
 
 
 if __name__ == "__main__":
     df = get_cleaned_data()
-    get_logger(__name__).info(f"Label Distribution: {df['label'].value_counts()}")
-    get_logger(__name__).info(f"Priority Distribution: {df['priority'].value_counts()}")
-    critical_samples = df[df["priority"] == "critical"]["text"].sample(
-        20, random_state=42
-    )
-    print(critical_samples.to_string())
+    logger.info(f"Label Distribution: {df['label'].value_counts()}")
+    logger.info(f"Priority Distribution: {df['priority'].value_counts()}")
+    # critical_samples = df[df["priority"] == "critical"]["text"].sample(
+    #     20, random_state=42
+    # )
+    # print(critical_samples.to_string())

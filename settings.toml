@@ -1,15 +1,90 @@
 app_name = "san"
-data_dir = "sedata"
-debug = true
-log_dir = "selogs"
-llm_model = "sesett"
-llm_base_url = "sett"
-learning_rate = 1e-4
-num_train_epochs = 5
 
+[hf_training]
 selected_model = "roberta-base"
-use_lora = false
+sentiment_model = "cardiffnlp/twitter-roberta-base-sentiment-latest"
+
+num_labels = 6
+max_seq_length = 256
+
+use_lora = true
+lora_r = 16
+lora_alpha = 32
+lora_dropout = 0.1
+
+device_map = "auto"
+
+
+[hf_training.training]
+learning_rate = 2e-5
+per_device_train_batch_size = 16
+per_device_eval_batch_size = 32
+
+num_train_epochs = 3.0
+gradient_accumulation_steps = 2
+
+weight_decay = 0.01
+warmup_ratio = 0.1
+
+fp16 = true
+bf16 = false
+
+eval_steps = 100
+save_steps = 100
+logging_steps = 50
+
+load_best_model_at_end = true
+metric_for_best_model = "f1"
+
+
 [data]
-min_word_count = 9
+min_word_count = 8
+min_ascii_ratio = 0.8
 dataset_sample_size = 200000
 random_seed = 42
+
+
+[docker]
+environment = "development"
+
+use_gpu = true
+num_workers = 4
+
+torch_dtype = "float16"
+
+max_memory_gb = 14
+seed = 42
+
+optimized_mode = false
+
+
+[exception]
+debug_mode = true
+raise_on_validation_error = true
+
+log_exceptions = true
+include_traceback_in_logs = true
+
+default_error_message = "An unexpected error occurred"
+
+use_sentry = false
+exit_on_critical_error = true
+
+
+[logs]
+log_level = "INFO"
+
+log_max_bytes = 5242880
+log_backup_count = 5
+
+log_to_console = true
+log_to_file = true
+
+log_fmt = "%(asctime)s || %(levelname)-8s || %(name)s || %(message)s"
+log_date = "%Y-%m-%d %H:%M:%S"
+
+use_wandb = false
+wandb_log_model = false
+
+use_tensorboard = true
+use_mlflow = false

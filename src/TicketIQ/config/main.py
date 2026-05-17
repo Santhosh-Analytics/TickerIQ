@@ -44,9 +44,7 @@ _base_dir = Path(__file__).resolve().parents[3]
 class Settings(BaseSettings):
     app_name: str = Field(default="TicketIQ")
     paths: PathsSettings = Field(default_factory=PathsSettings)
-    hf_training: HFTrainingSettings = Field(
-        default_factory=HFTrainingSettings
-    )  # renamed from 'model'
+    hf_training: HFTrainingSettings = Field(default_factory=HFTrainingSettings)
     logs: LogSettings = Field(default_factory=LogSettings)
     data: DataSettings = Field(default_factory=DataSettings)
     exception: ExceptionSettings = Field(default_factory=ExceptionSettings)
