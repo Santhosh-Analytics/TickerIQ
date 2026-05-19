@@ -41,12 +41,10 @@ def assign_category(text: str) -> str:
     best = max(counter, key=counter.get)
     if counter[best] == 0:
         return CategoryLabel.GENERAL.value
-    logger.info("Category labeling completed")
     return best.value
 
 
 def assign_priority(text: str) -> str:
-    logger.info("Started assigning priority")
     if not isinstance(text, str) or not text.split():
         return PriorityLabel.MEDIUM.value
 

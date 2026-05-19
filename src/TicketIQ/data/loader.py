@@ -1,3 +1,4 @@
+from sys import exception
 from TicketIQ.logger import get_logger
 from TicketIQ.exception import DataLoadError
 from TicketIQ.config.main import get_settings
@@ -11,11 +12,21 @@ logger = get_logger(__name__)
 
 def load_data() -> pd.DataFrame:
     data_dir = settings.paths.raw_data_dir
-    if Path("/kaggle/input/").exists():
-        csv_path = "/kaggle/input/datasets/organizations/thoughtvector/customer-support-on-twitter/twcs/twcs.csv"
-    else:
-        csv_path = data_dir / "twcs/twcs.csv"
     KAGGLE_HANDLE = "thoughtvector/customer-support-on-twitter"
+    try:
+        if Path("/kaggle/input/").exists():
+            csv_path = Path(
+                "/kaggle/input/datasets/organizations/thoughtvector/customer-support-on-twitter/twcs/twcs.csv"
+            )
+            if not csv_path.exists():
+                raise DataLoadError(
+                    message="No twcs.csv found in Kaggle input",
+                    error_code="DATA_LOAD_ERROR",
+                )
+        else:
+            csv_path = Path(data_dir / "twcs/twcs.csv")
+    except DataLoadError as e:
+        print(f"Error: {e}, code={e.error_code}")
 
     try:
         if not csv_path.exists():
