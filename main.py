@@ -1,5 +1,4 @@
 from pathlib import Path
-
 from TicketIQ.data import loader, cleaner
 
 # from TicketIQ import exception
@@ -29,12 +28,15 @@ print(logger)
 def get_cleaned_data():
     cleaned_csv = settings.paths.processed_data_dir / "cleaned_data.csv"
     labeled_csv = settings.paths.processed_data_dir / "labeled_data.csv"
+    sentiment_csv = settings.paths.processed_data_dir / "sentiment_data.csv"
 
     if labeled_csv.exists():
         logger.info(f"Labeled data found at {labeled_csv}")
         df = pd.read_csv(labeled_csv)
         logger.info(f"Dataset rows: {len(df)}")
-        apply_sentiment_batch(df)
+        df = apply_sentiment_batch(df)
+        df.to_csv(sentiment_csv)
+        logger.info("DF saved after sentiment labeled.")
         return df
 
     elif cleaned_csv.exists() and not labeled_csv.exists():

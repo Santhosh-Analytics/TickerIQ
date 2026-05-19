@@ -3,22 +3,29 @@ from TicketIQ.exception import DataLoadError
 from TicketIQ.config.main import get_settings
 import kagglehub
 import pandas as pd
+from pathlib import Path
+
+settings = get_settings()
+logger = get_logger(__name__)
 
 
 def load_data() -> pd.DataFrame:
-    data_dir = get_settings().paths.raw_data_dir
-    csv_path = data_dir / "twcs/twcs.csv"
+    data_dir = settings.paths.raw_data_dir
+    if Path("/kaggle/input/").exists():
+        csv_path = "/kaggle/input/datasets/organizations/thoughtvector/customer-support-on-twitter/twcs/twcs.csv"
+    else:
+        csv_path = data_dir / "twcs/twcs.csv"
     KAGGLE_HANDLE = "thoughtvector/customer-support-on-twitter"
 
     try:
         if not csv_path.exists():
-            get_logger(__name__).info(f"Downloading dataset to {data_dir}")
+            logger.info(f"Downloading dataset to {data_dir}")
             kagglehub.dataset_download(
                 handle=KAGGLE_HANDLE,
                 output_dir=str(data_dir),
             )
         else:
-            get_logger(__name__).info("Dataset already exists, skipping download")
+            logger.info("Dataset already exists, skipping download")
 
         if not csv_path.exists():
             raise DataLoadError(
@@ -26,13 +33,13 @@ def load_data() -> pd.DataFrame:
                 error_code="DATA_LOAD_ERROR",
             )
 
-        get_logger(__name__).info(f"Reading data from {csv_path}")
+        logger.info(f"Reading data from {csv_path}")
         return pd.read_csv(csv_path)
 
     except DataLoadError:
         raise
     except Exception as e:
-        get_logger(__name__).error("Data load failed", exc_info=True)
+        logger.error("Data load failed", exc_info=True)
         raise DataLoadError(
             message=f"Failed to load dataset: {e}",
             error_code="DATA_LOAD_ERROR",
