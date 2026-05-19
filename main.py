@@ -6,11 +6,11 @@ from TicketIQ.data import loader, cleaner
 # from TicketIQ.logger import get_logger
 # from TicketIQ.exception import DataLoadError
 from TicketIQ.config.main import get_settings
+from TicketIQ.data.schema import SentimentLabel
 import pandas as pd
 from TicketIQ.data.keywords import priority_keywords
-from TicketIQ.data.labeler import assign_category, applying_label
+from TicketIQ.data.labeler import assign_category, applying_label, apply_sentiment_batch
 from TicketIQ.logger import get_logger
-
 # pd.set_option("display.max_columns", 10)  # show all columns
 # pd.set_option("display.width", 90)  # don’t wrap lines
 # pd.set_option("display.max_colwidth", 90)  # show full text in each cell
@@ -22,15 +22,19 @@ pd.set_option("display.max_colwidth", None)  # show full text in each cell
 # import kagglehub
 logger = get_logger(__name__)
 
+settings = get_settings()
+print(logger)
+
 
 def get_cleaned_data():
-    cleaned_csv = get_settings().paths.processed_data_dir / "cleaned_data.csv"
-    labeled_csv = get_settings().paths.processed_data_dir / "labeled_data.csv"
+    cleaned_csv = settings.paths.processed_data_dir / "cleaned_data.csv"
+    labeled_csv = settings.paths.processed_data_dir / "labeled_data.csv"
 
     if labeled_csv.exists():
         logger.info(f"Labeled data found at {labeled_csv}")
         df = pd.read_csv(labeled_csv)
         logger.info(f"Dataset rows: {len(df)}")
+        apply_sentiment_batch(df)
         return df
 
     elif cleaned_csv.exists() and not labeled_csv.exists():
@@ -52,7 +56,3 @@ if __name__ == "__main__":
     df = get_cleaned_data()
     logger.info(f"Label Distribution: {df['label'].value_counts()}")
     logger.info(f"Priority Distribution: {df['priority'].value_counts()}")
-    # critical_samples = df[df["priority"] == "critical"]["text"].sample(
-    #     20, random_state=42
-    # )
-    # print(critical_samples.to_string())

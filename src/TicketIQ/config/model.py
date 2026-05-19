@@ -11,7 +11,6 @@ class ModelName(str, Enum):
     ROBERTA = "roberta-base"
     DISTILBERT = "distilbert-base-uncased"
     SENTIMENT = "cardiffnlp/twitter-roberta-base-sentiment-latest"
-    # Add more models easily
     # MISTRAL = "mistralai/Mistral-7B-v0.1"
 
 
@@ -66,4 +65,4 @@ class HFTrainingSettings(BaseSettings):
 
 if __name__ == "__main__":
     model_config = HFTrainingSettings()
-    model_config.model_dump()
+    print(model_config.model_dump())
