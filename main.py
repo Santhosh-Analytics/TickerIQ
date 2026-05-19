@@ -55,10 +55,11 @@ def get_cleaned_data():
         df = apply_sentiment_batch(df)
         df.to_csv(sentiment_csv)
         logger.info("DF saved after sentiment labeled.")
-        return
+        return df
 
 
 if __name__ == "__main__":
     df = get_cleaned_data()
     logger.info(f"Label Distribution: {df['label'].value_counts()}")
     logger.info(f"Priority Distribution: {df['priority'].value_counts()}")
+    logger.info(f"Priority Distribution: {df['sentiment'].value_counts()}")
