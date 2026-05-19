@@ -51,7 +51,11 @@ def get_cleaned_data():
         df = cleaner.filter_data(df)
         df = cleaner.clean_data(df)
         logger.info(f"Final dataset rows: {len(df)}")
-        return applying_label(df)
+        df = applying_label(df)
+        df = apply_sentiment_batch(df)
+        df.to_csv(sentiment_csv)
+        logger.info("DF saved after sentiment labeled.")
+        return
 
 
 if __name__ == "__main__":
